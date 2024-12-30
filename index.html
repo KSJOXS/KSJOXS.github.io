@@ -3,36 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shirt Store</title>
+  <title>Hand of Art Store</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-    .product { border: 1px solid #ccc; margin: 10px; padding: 10px; display: inline-block; width: 200px; text-align: center; }
+    .container { padding: 20px; }
+    .product { border: 1px solid #e374c6; margin: 10px; padding: 10px; display: inline-block; width: 200px; text-align: center; }
     .product img { width: 100%; height: auto; }
-    .cart { position: fixed; top: 10px; right: 10px; background: #f1f1f1; padding: 10px; }
+    .cart-summary { position: fixed; top: 10px; right: 10px; background: #f1f1f1; padding: 10px; width: 250px; }
+    .cart-summary h3, .cart-summary p { margin: 5px 0; }
+    .notification { 
+      position: fixed; 
+      bottom: 20px; 
+      right: 20px; 
+      background: #28a745; 
+      color: white; 
+      padding: 10px 20px; 
+      border-radius: 5px; 
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3); 
+      display: none; 
+    }
   </style>
 </head>
 <body>
-  <h1>Welcome to hand of Art Store</h1>
-  <div id="products"></div>
-  <div class="cart" id="cart">Cart: $0</div>
+  <div class="container">
+    <h1>Welcome to Hand of Art Store</h1>
+    <div id="products"></div>
+    <div class="cart-summary" id="cart-summary">
+      <h3>Cart Summary</h3>
+      <p>Total Products: <span id="total-products">0</span></p>
+      <p>Total Price: <span id="total-price">$0</span></p>
+      <button onclick="viewBag()">View Bag</button>
+    </div>
+    <div class="notification" id="notification">Product added to the bag!</div>
+  </div>
+
   <script>
     const products = [
-      { 
-        id: 1, 
-        name: "ຮູບ", 
-        price: 20.000, 
-        img: "https://scontent.fdad7-1.fna.fbcdn.net/v/t39.30808-6/454500695_969363831543776_1757153480454578913_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=127cfc&_nc_ohc=umuFi2xEOQcQ7kNvgGLlNG0&_nc_zt=23&_nc_ht=scontent.fdad7-1.fna&_nc_gid=AA52orNl-4Ia-PRjirL67gR&oh=00_AYAfOzAttz-TlMogUdV28S1vHMHgB5T_YfLerB6s9HnOyA&oe=677856AB" 
-      },
-      { 
-        id: 2, 
-        name: "ໝູນ້ອຍ", 
-        price: 25.000, 
-        img: "https://scontent.fdad7-2.fna.fbcdn.net/v/t39.30808-6/458980860_988358902977602_937566559796679436_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=pAGsoHEJ1DcQ7kNvgGJZNTD&_nc_zt=23&_nc_ht=scontent.fdad7-2.fna&_nc_gid=AxlFhs1DRFqx7cqMdHiy7Y-&oh=00_AYAEB3mO1Lr28-TyI6_Mp8AUoWG9Tz8jswQRmGytkVoPiQ&oe=67782DEE" 
-      }
+      { id: 1, name: "ຮູບ", price: 20000, img: "https://scontent.fdad7-1.fna.fbcdn.net/v/t39.30808-6/454500695_969363831543776_1757153480454578913_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=127cfc&_nc_ohc=umuFi2xEOQcQ7kNvgGLlNG0&_nc_zt=23&_nc_ht=scontent.fdad7-1.fna&_nc_gid=AA52orNl-4Ia-PRjirL67gR&oh=00_AYAfOzAttz-TlMogUdV28S1vHMHgB5T_YfLerB6s9HnOyA&oe=677856AB" },
+      { id: 2, name: "ໝູນ້ອຍ", price: 25000, img: "https://scontent.fdad7-2.fna.fbcdn.net/v/t39.30808-6/458980860_988358902977602_937566559796679436_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=pAGsoHEJ1DcQ7kNvgGJZNTD&_nc_zt=23&_nc_ht=scontent.fdad7-2.fna&_nc_gid=AxlFhs1DRFqx7cqMdHiy7Y-&oh=00_AYAEB3mO1Lr28-TyI6_Mp8AUoWG9Tz8jswQRmGytkVoPiQ&oe=67782DEE" }
     ];
 
     let cart = [];
 
+    // Display products
     function displayProducts() {
       const container = document.getElementById('products');
       container.innerHTML = products.map(product => `
@@ -40,17 +53,72 @@
           <img src="${product.img}" alt="${product.name}">
           <h2>${product.name}</h2>
           <p>Price: $${product.price}</p>
-          <button onclick="addToCart(${product.id}, ${product.price})">Add to Cart</button>
+          <button onclick="addToCart(${product.id}, ${product.price})">Add to Bag</button>
         </div>
       `).join('');
     }
 
+    // Add to cart and update database
     function addToCart(id, price) {
-      cart.push({ id, price });
-      const total = cart.reduce((sum, item) => sum + item.price, 0);
-      document.getElementById('cart').innerText = `Cart: $${total}`;
+      const product = products.find(p => p.id === id);
+      const cartItem = cart.find(item => item.id === id);
+
+      if (cartItem) {
+        cartItem.quantity++;
+      } else {
+        cart.push({ ...product, quantity: 1 });
+      }
+
+      updateCartSummary();
+      showNotification(`${product.name} added to the bag!`);
+
+      // Send AJAX request to update the database
+      updateDatabase(product.id, product.name, product.price, product.img);
     }
 
+    // Send the product to the database (AJAX request)
+    function updateDatabase(id, name, price, img) {
+      const data = { id, name, price, img };
+
+      fetch('insert.php', { // The URL of your backend PHP script
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          console.log('Product inserted into database');
+        } else {
+          console.log('Error inserting product');
+        }
+      })
+      .catch(error => console.log('Error:', error));
+    }
+
+    // Update cart summary
+    function updateCartSummary() {
+      document.getElementById('total-products').innerText = cart.length;
+      document.getElementById('total-price').innerText = `$${cart.reduce((sum, item) => sum + item.price * item.quantity, 0)}`;
+    }
+
+    // Show notification
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      notification.innerText = message;
+      notification.style.display = 'block';
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 2000);
+    }
+
+    // View bag function
+    function viewBag() {
+      localStorage.setItem('cart', JSON.stringify(cart)); // Save cart data to localStorage
+      window.location.href = 'view-bag.html'; // Redirect to view-bag.html
+    }
+
+    // Initialize product display
     displayProducts();
   </script>
 </body>
