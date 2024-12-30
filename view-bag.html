@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Shopping Bag</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    .container { padding: 20px; }
+    .cart-item { border: 1px solid #e374c6; margin: 10px; padding: 10px; display: flex; justify-content: space-between; align-items: center; }
+    .cart-summary { position: fixed; top: 10px; right: 10px; background: #f1f1f1; padding: 10px; width: 250px; }
+    .cart-summary h3, .cart-summary p { margin: 5px 0; }
+    .cart-item button { margin: 0 5px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Your Shopping Bag</h1>
+    <div id="cart-items"></div>
+    <div class="cart-summary">
+      <h3>Cart Summary</h3>
+      <p>Total Products: <span id="total-products">0</span></p>
+      <p>Total Price: <span id="total-price">$0</span></p>
+    </div>
+  </div>
+
+  <script>
+    // Retrieve cart data from localStorage
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Display cart items
+    function displayCart() {
+      const container = document.getElementById('cart-items');
+      container.innerHTML = cart.map(item => `
+        <div class="cart-item" data-id="${item.id}">
+          <div>
+            <img src="${item.img}" alt="${item.name}" width="50">
+            <h3>${item.name}</h3>
+            <p>Price: $${item.price}</p>
+            <p>Quantity: <span id="quantity-${item.id}">${item.quantity}</span></p>
+          </div>
+          <div>
+            <button onclick="decreaseQuantity(${item.id})">-</button>
+            <button onclick="increaseQuantity(${item.id})">+</button>
+            <button onclick="removeFromCart(${item.id})">Remove</button>
+          </div>
+        </div>
+      `).join('');
+
+      updateCartSummary();
+    }
+
+    // Update cart summary
+    function updateCartSummary() {
+      document.getElementById('total-products').innerText = cart.length;
+      document.getElementById('total-price').innerText = `$${cart.reduce((sum, item) => sum + item.price * item.quantity, 0)}`;
+    }
+
+    // Decrease quantity of a product
+    function decreaseQuantity(id) {
+      const item = cart.find(item => item.id === id);
+      if (item && item.quantity > 1) {
+        item.quantity--;
+        updateCartSummary();
+        localStorage.setItem('cart', JSON.stringify(cart));
+        displayCart();
+      }
+    }
+
+    // Increase quantity of a product
+    function increaseQuantity(id) {
+      const item = cart.find(item => item.id === id);
+      if (item) {
+        item.quantity++;
+        updateCartSummary();
+        localStorage.setItem('cart', JSON.stringify(cart));
+        displayCart();
+      }
+    }
+
+    // Remove product from cart
+    function removeFromCart(id) {
+      const index = cart.findIndex(item => item.id === id);
+      if (index !== -1) {
+        cart.splice(index, 1);  // Remove product from the cart array
+        updateCartSummary();
+        localStorage.setItem('cart', JSON.stringify(cart));
+        displayCart();
+      }
+    }
+
+    // Initialize cart display
+    displayCart();
+  </script>
+</body>
+</html>
