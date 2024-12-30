@@ -9,114 +9,93 @@
       font-family: 'Arial', sans-serif;
       margin: 0;
       padding: 0;
-      background: linear-gradient(135deg, #f0f8ff, #d9e3f0); /* Gradient background */
+      background-color: #f8f8f8;
       color: #333;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
-
-    h1 {
-      font-size: 2.5rem;
-      color: #4e5d6a;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-    }
-
     .container {
-      max-width: 1200px;
-      width: 90%;
-      padding: 30px;
-      text-align: center;
-    }
-
-    .product {
-      border: 1px solid #e374c6;
-      margin: 15px;
       padding: 20px;
-      display: inline-block;
-      width: 220px;
-      text-align: center;
-      border-radius: 10px;
+      max-width: 1200px;
+      margin: 20px auto;
       background-color: #fff;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 12px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     }
-
+    h1 {
+      font-size: 28px;
+      color: #6a1b9a;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .product {
+      border: 1px solid #ddd;
+      padding: 15px;
+      background-color: #fff;
+      text-align: center;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
     .product img {
       width: 100%;
       height: auto;
       border-radius: 8px;
-      transition: transform 0.3s ease;
     }
-
-    .product:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .product:hover img {
-      transform: scale(1.1);
-    }
-
     .product h2 {
-      font-size: 1.2rem;
-      color: #5c3d77;
+      font-size: 18px;
+      margin: 10px 0;
+      color: #333;
     }
-
     .product p {
-      font-size: 1rem;
-      color: #777;
+      font-size: 16px;
+      color: #555;
     }
-
     .product button {
-      background-color: #e374c6;
+      background-color: #6a1b9a;
       color: white;
+      padding: 8px 15px;
       border: none;
-      padding: 10px 20px;
-      font-size: 1rem;
       border-radius: 5px;
       cursor: pointer;
       transition: background-color 0.3s;
     }
-
     .product button:hover {
-      background-color: #c55fa1;
+      background-color: #4e148c;
     }
-
     .cart-summary {
+      background: #fff;
+      padding: 15px;
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
       position: fixed;
-      top: 15px;
-      right: 15px;
-      background: #f1f1f1;
-      padding: 20px;
+      bottom: 20px;
+      right: 20px;
       width: 250px;
-      border-radius: 10px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     }
-
-    .cart-summary h3, .cart-summary p {
+    .cart-summary h3 {
+      margin-bottom: 10px;
+      color: #6a1b9a;
+    }
+    .cart-summary p {
       margin: 5px 0;
-      color: #4e5d6a;
     }
-
     .cart-summary button {
-      background-color: #4e5d6a;
+      width: 100%;
+      padding: 10px;
+      background-color: #6a1b9a;
       color: white;
       border: none;
-      padding: 10px;
-      font-size: 1rem;
       border-radius: 5px;
       cursor: pointer;
-      width: 100%;
-      margin-top: 10px;
       transition: background-color 0.3s;
     }
-
     .cart-summary button:hover {
-      background-color: #3a4a5c;
+      background-color: #4e148c;
     }
-
     .notification {
       position: fixed;
       bottom: 20px;
@@ -128,39 +107,31 @@
       box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
       display: none;
     }
-
-    @media (max-width: 768px) {
-      .product {
-        width: 100%;
-        margin: 10px 0;
-      }
-
-      .cart-summary {
-        width: 100%;
-        position: static;
-        box-shadow: none;
-        margin-top: 20px;
-      }
-    }
   </style>
 </head>
 <body>
+
   <div class="container">
     <h1>Welcome to Hand of Art Store</h1>
-    <div id="products"></div>
-    <div class="cart-summary" id="cart-summary">
-      <h3>Cart Summary</h3>
-      <p>Total Products: <span id="total-products">0</span></p>
-      <p>Total Price: <span id="total-price">$0</span></p>
-      <button onclick="viewBag()">View Bag</button>
-    </div>
+    
+    <div class="products" id="products"></div>
+    
     <div class="notification" id="notification">Product added to the bag!</div>
+  </div>
+
+  <div class="cart-summary" id="cart-summary">
+    <h3>Cart Summary</h3>
+    <p>Total Products: <span id="total-products">0</span></p>
+    <p>Total Price: <span id="total-price">$0</span></p>
+    <button onclick="viewBag()">View Bag</button>
   </div>
 
   <script>
     const products = [
       { id: 1, name: "ຮູບ", price: 20000, img: "https://scontent.fdad7-1.fna.fbcdn.net/v/t39.30808-6/454500695_969363831543776_1757153480454578913_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=127cfc&_nc_ohc=umuFi2xEOQcQ7kNvgGLlNG0&_nc_zt=23&_nc_ht=scontent.fdad7-1.fna&_nc_gid=AA52orNl-4Ia-PRjirL67gR&oh=00_AYAfOzAttz-TlMogUdV28S1vHMHgB5T_YfLerB6s9HnOyA&oe=677856AB" },
-      { id: 2, name: "ໝູນ້ອຍ", price: 25000, img: "https://scontent.fdad7-2.fna.fbcdn.net/v/t39.30808-6/458980860_988358902977602_937566559796679436_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=pAGsoHEJ1DcQ7kNvgGJZNTD&_nc_zt=23&_nc_ht=scontent.fdad7-2.fna&_nc_gid=AxlFhs1DRFqx7cqMdHiy7Y-&oh=00_AYAEB3mO1Lr28-TyI6_Mp8AUoWG9Tz8jswQRmGytkVoPiQ&oe=67782DEE" }
+      { id: 2, name: "ໝູນ້ອຍ", price: 25000, img: "https://scontent.fdad7-2.fna.fbcdn.net/v/t39.30808-6/458980860_988358902977602_937566559796679436_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=pAGsoHEJ1DcQ7kNvgGJZNTD&_nc_zt=23&_nc_ht=scontent.fdad7-2.fna&_nc_gid=AxlFhs1DRFqx7cqMdHiy7Y-&oh=00_AYAEB3mO1Lr28-TyI6_Mp8AUoWG9Tz8jswQRmGytkVoPiQ&oe=67782DEE" },
+      { id: 3, name: "ຖົງກະຕ່າຍ", price: 25000, img: "https://scontent.fdad7-2.fna.fbcdn.net/v/t39.30808-6/465594387_122212199870026371_9150437725934338646_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=SLfM9i3XXUQQ7kNvgFfwKE6&_nc_zt=23&_nc_ht=scontent.fdad7-2.fna&_nc_gid=A7mmNdB0q-xv9NBlxGveTQG&oh=00_AYBUfmisqBaDz9310YseJOfm3SPBVDBXu5uaz0YBXdQJIg&oe=67788BA5" },
+      { id: 4, name: "ຕຸກກະຕາ", price: 65000, img: "https://scontent.fdad7-2.fna.fbcdn.net/v/t39.30808-6/466043993_122213460224026371_546472944771900736_n.jpg?stp=dst-jpg_s600x600_tt6&_nc_cat=104&ccb=1-7&_nc_sid=127cfc&_nc_ohc=em-NLU8rI-MQ7kNvgHUf4-K&_nc_zt=23&_nc_ht=scontent.fdad7-2.fna&_nc_gid=AR7cQY7_AHmw0Pv5L5WB8mt&oh=00_AYAfsr29DH3NNIKVAxwgzMh2qDaMMp1_9vrFDgK0m6oHCA&oe=677864BF" }
     ];
 
     let cart = [];
@@ -178,7 +149,7 @@
       `).join('');
     }
 
-    // Add to cart and update database
+    // Add to cart and update cart summary
     function addToCart(id, price) {
       const product = products.find(p => p.id === id);
       const cartItem = cart.find(item => item.id === id);
@@ -191,29 +162,6 @@
 
       updateCartSummary();
       showNotification(`${product.name} added to the bag!`);
-
-      // Send AJAX request to update the database
-      updateDatabase(product.id, product.name, product.price, product.img);
-    }
-
-    // Send the product to the database (AJAX request)
-    function updateDatabase(id, name, price, img) {
-      const data = { id, name, price, img };
-
-      fetch('insert.php', { // The URL of your backend PHP script
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          console.log('Product inserted into database');
-        } else {
-          console.log('Error inserting product');
-        }
-      })
-      .catch(error => console.log('Error:', error));
     }
 
     // Update cart summary
@@ -241,5 +189,6 @@
     // Initialize product display
     displayProducts();
   </script>
+
 </body>
 </html>
