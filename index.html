@@ -5,22 +5,142 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hand of Art Store</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-    .container { padding: 20px; }
-    .product { border: 1px solid #e374c6; margin: 10px; padding: 10px; display: inline-block; width: 200px; text-align: center; }
-    .product img { width: 100%; height: auto; }
-    .cart-summary { position: fixed; top: 10px; right: 10px; background: #f1f1f1; padding: 10px; width: 250px; }
-    .cart-summary h3, .cart-summary p { margin: 5px 0; }
-    .notification { 
-      position: fixed; 
-      bottom: 20px; 
-      right: 20px; 
-      background: #28a745; 
-      color: white; 
-      padding: 10px 20px; 
-      border-radius: 5px; 
-      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3); 
-      display: none; 
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #f0f8ff, #d9e3f0); /* Gradient background */
+      color: #333;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #4e5d6a;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 90%;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .product {
+      border: 1px solid #e374c6;
+      margin: 15px;
+      padding: 20px;
+      display: inline-block;
+      width: 220px;
+      text-align: center;
+      border-radius: 10px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .product:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .product:hover img {
+      transform: scale(1.1);
+    }
+
+    .product h2 {
+      font-size: 1.2rem;
+      color: #5c3d77;
+    }
+
+    .product p {
+      font-size: 1rem;
+      color: #777;
+    }
+
+    .product button {
+      background-color: #e374c6;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .product button:hover {
+      background-color: #c55fa1;
+    }
+
+    .cart-summary {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background: #f1f1f1;
+      padding: 20px;
+      width: 250px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .cart-summary h3, .cart-summary p {
+      margin: 5px 0;
+      color: #4e5d6a;
+    }
+
+    .cart-summary button {
+      background-color: #4e5d6a;
+      color: white;
+      border: none;
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+
+    .cart-summary button:hover {
+      background-color: #3a4a5c;
+    }
+
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #28a745;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .product {
+        width: 100%;
+        margin: 10px 0;
+      }
+
+      .cart-summary {
+        width: 100%;
+        position: static;
+        box-shadow: none;
+        margin-top: 20px;
+      }
     }
   </style>
 </head>
