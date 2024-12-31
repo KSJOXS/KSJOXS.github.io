@@ -1,17 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <Frameset rows ="80,*,80" Border=0>
-        <Frame name="T1" src="../T1.html">
-        <Frameset cols ="150,*,380">
-            <Frame name="T2" src="../T2.html">
-            <Frame name="T3" src="../T3.html">
-            <Frame name="T4" src="../T4.html">
-        </Frameset>
-        <Frame name="T5" src="../T5.html"></Frame>
-    </Frameset>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Index Page</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    .header {
+      height: 80px;
+      background-color: #f4f4f4;
+      border-bottom: 1px solid #ccc;
+    }
+    .content {
+      display: flex;
+      flex: 1;
+    }
+    .left-sidebar {
+      width: 150px;
+      background-color: #e9ecef;
+      border-right: 1px solid #ccc;
+    }
+    .main-content {
+      flex: 1;
+      background-color: #fff;
+    }
+    .right-sidebar {
+      width: 380px;
+      background-color: #f8f9fa;
+      border-left: 1px solid #ccc;
+    }
+    .footer {
+      height: 80px;
+      background-color: #f4f4f4;
+      border-top: 1px solid #ccc;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
 </head>
 <body>
-    
+  <div class="container">
+    <!-- Top Section (Header) -->
+    <div class="header">
+      <iframe src="../T1.html" title="Header"></iframe>
+    </div>
+
+    <!-- Middle Section (Main Content and Sidebars) -->
+    <div class="content">
+      <!-- Left Sidebar -->
+      <div class="left-sidebar">
+        <iframe src="../T2.html" title="Left Sidebar"></iframe>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="main-content">
+        <iframe src="../T3.html" title="Main Content"></iframe>
+      </div>
+
+      <!-- Right Sidebar -->
+      <div class="right-sidebar">
+        <iframe src="../T4.html" title="Right Sidebar"></iframe>
+      </div>
+    </div>
+
+    <!-- Bottom Section (Footer) -->
+    <div class="footer">
+      <iframe src="../T5.html" title="Footer"></iframe>
+    </div>
+  </div>
 </body>
 </html>
